@@ -3,10 +3,10 @@
   <v-app id="inspire">
     <v-app-bar
       app
-      color="indigo"
+      color="indigo darken-3"
       dark
     >
-      <v-toolbar-title>Podcast-helper</v-toolbar-title>
+      <v-toolbar-title>AutoJSON for Podkast</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
@@ -24,7 +24,7 @@
             <v-card 
               class="elevated-12"
             >
-                <v-toolbar dark color="indigo ligthen-1">
+                <v-toolbar dark color="indigo">
                   <v-toolbar-title>Metadata</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text
@@ -96,12 +96,11 @@
           </v-col>  
 
           <v-col>
-            <v-card class="elevated-12">
               <v-container grid-list-xs>
                 <v-row>
                   <v-col>
                   <v-card>
-                    <v-toolbar dark color="indigo lighten-1">
+                    <v-toolbar dark color="indigo">
                       <v-toolbar-title>JSON</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
@@ -109,7 +108,7 @@
                         v-if="isShowIDValid"
                         flex  
                       >
-                      {{ jsonblob }}
+                      {{jsonblob}}
                       </code> <br> <br>
                       <v-btn
                         v-if="isShowIDValid" 
@@ -127,7 +126,7 @@
                 <v-row>
                   <v-col>
                     <v-card>
-                      <v-toolbar dark color="indigo lighten-1">
+                      <v-toolbar dark color="indigo">
                         <v-toolbar-title>Bilde</v-toolbar-title>
                       </v-toolbar>
                       <v-card-text>
@@ -142,14 +141,13 @@
                   </v-col>
                 </v-row>
               </v-container>
-            </v-card>
           </v-col>  
           
         </v-row>
       </v-container>
     </v-content>
     <v-footer
-      color="indigo"
+      color="indigo darken-3"
       app
     >
       <span class="white--text">&copy; Studentmediene i Trondheim</span>
@@ -189,7 +187,7 @@
           "subtitle": this.subtitle,
           "description": this.description,
         }
-        return this.showID + ": " + JSON.stringify(output, null, "\t") + ","
+        return "\"" + this.showID + "\": " + JSON.stringify(output, null, "\t") + ","
       },
     },
     methods: {
