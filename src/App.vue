@@ -206,7 +206,7 @@
 
     mounted() {
       console.log("categories", getFlattenedCategories())
-      axios.get("http://api.radiorevolt.no/v1/programmer/list/").then(
+      axios.get("https://api.radiorevolt.no/v1/programmer/list/").then(
         response => {
           this.allPrograms = response.data.filter(program => !program.old)
           console.log(this.allPrograms)
