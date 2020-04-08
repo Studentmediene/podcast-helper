@@ -11,7 +11,7 @@
 
     <v-content>
       <v-container
-        class="fill-height podcast-helper-main"
+        class="podcast-helper-main"
         max-width="800"
       >
 
@@ -22,17 +22,16 @@
         >
           <v-col>
             <v-card 
-            class="elevated-12"
+              class="elevated-12"
             >
+                <v-toolbar dark color="indigo ligthen-1">
+                  <v-toolbar-title>Metadata</v-toolbar-title>
+                </v-toolbar>
+                <v-card-text
+                  color="white"
+                >                  
                 <v-form>
                   <v-container grid-list-xs>
-                    <v-row>
-                      <v-col>
-                        <h2>
-                          Podcast JSON-helper
-                        </h2>
-                      </v-col>
-                    </v-row>
                     <v-row>
                       <v-col>
                         <v-autocomplete
@@ -82,38 +81,66 @@
                     </v-row>
                     <v-row>
                       <v-col>
-                        <v-text-field
+                        <v-textarea
                           v-model="description"
                           name="long-description"
                           label="Lang beskrivelse"
                           id="long-description-field"
-                        ></v-text-field>
+                        ></v-textarea>
                       </v-col>
                     </v-row>
                   </v-container>  
                 </v-form>
+                </v-card-text>
             </v-card>  
           </v-col>  
 
           <v-col>
             <v-card class="elevated-12">
               <v-container grid-list-xs>
-                <code v-if="isShowIDValid">
-                  {{ jsonblob }}
-                </code>
-                <br>
-                ShowID: {{ showID }}
-                <br>
-                Image:  
-                <v-img 
-                  v-if="isImageURLPresent"
-                  :aspect-ratio="1/1" 
-                  v-bind:src="imageURL">
-                </v-img>
-                <br>
-                Subtitle {{ subtitle }}
-                <br>
-                Description {{ description }}
+                <v-row>
+                  <v-col>
+                  <v-card>
+                    <v-toolbar dark color="indigo lighten-1">
+                      <v-toolbar-title>JSON</v-toolbar-title>
+                    </v-toolbar>
+                    <v-card-text>
+                      <code 
+                        v-if="isShowIDValid"
+                        flex  
+                      >
+                      {{ jsonblob }}
+                      </code> <br> <br>
+                      <v-btn
+                        v-if="isShowIDValid" 
+                        @click="copyJSONBlobToClipBoard"
+                      >
+                        Kopier til utklippstavle
+                      </v-btn>
+                      <p v-else>
+                        Velg et program for å få opp JSON!
+                      </p>
+                    </v-card-text>
+                  </v-card> 
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-card>
+                      <v-toolbar dark color="indigo lighten-1">
+                        <v-toolbar-title>Bilde</v-toolbar-title>
+                      </v-toolbar>
+                      <v-card-text>
+                        <v-img 
+                          v-if="isImageURLPresent"
+                          :aspect-ratio="1/1" 
+                          max-width="200px"
+                          v-bind:src="imageURL">
+                        </v-img>
+                      </v-card-text>
+                    </v-card> 
+                  </v-col>
+                </v-row>
               </v-container>
             </v-card>
           </v-col>  
@@ -155,22 +182,28 @@
       isShowIDValid: function() {
         return !!this.showID
       },
-      jsonoutput: function() {
-        return {
+      jsonblob: function() {
+        const output = {
           ...(this.isImageURLPresent && {"image": this.imageURL}),
           "category": this.categories,
           "subtitle": this.subtitle,
           "description": this.description,
         }
+        return this.showID + ": " + JSON.stringify(output, null, "\t") + ","
       },
-      jsonblob: function() {
-        // We need at least to pick a show to make a vaild json
-        if (!this.isShowIDValid) {
-          return "Velg et program!"
-        }
-
-        return this.showID + ": " + JSON.stringify(this.jsonoutput, null, "\t")
+    },
+    methods: {
+      foo: function() {
+        console.log("bar")
       },
+      copyJSONBlobToClipBoard: function() {
+        const el = document.createElement('textarea');
+        el.value = this.jsonblob;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+      }
     },
 
     mounted() {
